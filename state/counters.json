@@ -1,0 +1,14 @@
+{
+  "pickup_task_id_by_type": {
+    "Lấy tổng": "BC-LAYTONG-1",
+    "Lấy từng đơn": "BC-TUNGDON-1",
+    "web api - có kiện": "WEB-CK-06",
+    "web api - ko kiện": "WEB-KK-1"
+  },
+  "order_id_by_type": {
+    "Lấy tổng": "LAY_TONG0000",
+    "Lấy từng đơn": "LAY_TUNG_DON0000",
+    "web api - có kiện": "WEBCK10",
+    "web api - ko kiện": "WEBKK0006"
+  }
+}
