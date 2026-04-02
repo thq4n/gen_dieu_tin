@@ -1,0 +1,163 @@
+{
+  "eventType": "RabbitMqPickupTaskEvent",
+  "eventId": "b7c2f6a1-3a9d-4d4a-9c2f-8f3a9c2d1e55",
+  "createdAt": "2026-03-10T10:10:30Z",
+  "pickupTaskId": "WEB-CK-07",
+  "dispatchType": 5,
+  "dispatchMethod": 1,
+  "pickupPostOfficeCode": "LKG",
+  "scheduledPickupDate": "2026-03-31T 07:00:00+07",
+  "pickupPostOfficeId": "0000000b-4b33-4200-0000-000000000000",
+  "pickupPostOfficeName": "SHH - Sư Vạn Hạnh",
+  "pickupAddress": "92 Đường số 49, Khu phố 8, Phường Bình Tân, HỒ CHÍ MINH",
+  "pickupWardId": "HCMBAN",
+  "pickupWardName": "Bến Nghé",
+  "pickupProvinceId": "HCM",
+  "pickupProvinceName": "TP. Hồ Chí Minh",
+  "pickupCountryId": "VN",
+  "pickupCountryName": "Việt Nam",
+  "pickupLongitude": 0,
+  "pickupLatitude": 0,
+  "senderId": "CUS-789",
+  "senderName": "Nguyễn Văn A",
+  "senderPhone": "0909123456",
+  "senderEmail": "nguyenvana@example.com",
+  "partnerId": "CUS01",
+  "partnerName": "Công ty TNHH TT",
+  "assignedEmployeeId": "",
+  "assignedEmployeeName": "",
+  "assignedEmployeeCode": "",
+  "assignedEmployeePhone": "",
+  "scheduledPickupTimeFrom": "09:32:00",
+  "scheduledPickupTimeTo": "09:35:00",
+  "actualPickupTime": null,
+  "statusId": "waiting_for_assignment",
+  "statusName": "Chờ phân công",
+  "totalItems": 3,
+  "totalWeight": 5.75,
+  "totalCalWeight": 6.2,
+  "totalCodAmount": 1500000,
+  "l": 20,
+  "h": 25,
+  "w": 35,
+  "serviceTypeId": "EXPRESS",
+  "serviceTypeName": "Chuyển phát nhanh",
+  "priority": 1,
+  "notes": "Khách yêu cầu gọi trước khi đến",
+  "internalNotes": "Ưu tiên xử lý trong buổi sáng",
+  "metadataJson": "{\"source\":\"mobile_app\",\"campaign\":\"TET2026\"}",
+  "createdBy": "326f6e49-6292-4ee3-9b8e-c84df103b722",
+  "createdByName": "Phạm Phan Nhật Minh",
+  "updatedBy": null,
+  "updatedByName": null,
+  "isDeleted": false,
+  "isCancelled": false,
+  "cancellationReason": null,
+  "orders": [
+    {
+      "orderId": "WEBCK11",
+      "createdAt": "2026-03-20T10:00:00Z",
+      "weight": 1.5,
+      "l": 10.0,
+      "w": 5.0,
+      "h": 3.0,
+      "items": [
+        {
+          "orderId": "WEBCK11",
+          "orderItemId": "WEBCK11",
+          "weight": 0.5,
+          "l": 5.0,
+          "w": 2.0,
+          "h": 1.0
+        },
+        {
+          "orderId": "WEBCK11",
+          "orderItemId": "WEBCK11/2",
+          "weight": 0.5,
+          "l": 5.0,
+          "w": 2.0,
+          "h": 1.0
+        },
+        {
+          "orderId": "WEBCK11",
+          "orderItemId": "WEBCK11/3",
+          "weight": 0.5,
+          "l": 5.0,
+          "w": 2.0,
+          "h": 1.0
+        }
+      ],
+      "goodsType": 1
+    },
+    {
+      "orderId": "WEBCK12",
+      "createdAt": "2026-03-20T10:00:00Z",
+      "weight": 1.5,
+      "l": 10.0,
+      "w": 5.0,
+      "h": 3.0,
+      "items": [
+        {
+          "orderId": "WEBCK12",
+          "orderItemId": "WEBCK12",
+          "weight": 0.5,
+          "l": 5.0,
+          "w": 2.0,
+          "h": 1.0
+        },
+        {
+          "orderId": "WEBCK12",
+          "orderItemId": "WEBCK12/2",
+          "weight": 0.5,
+          "l": 5.0,
+          "w": 2.0,
+          "h": 1.0
+        },
+        {
+          "orderId": "WEBCK12",
+          "orderItemId": "WEBCK12/3",
+          "weight": 0.5,
+          "l": 5.0,
+          "w": 2.0,
+          "h": 1.0
+        }
+      ],
+      "goodsType": 1
+    },
+    {
+      "orderId": "WEBCK13",
+      "createdAt": "2026-03-20T10:00:00Z",
+      "weight": 1.5,
+      "l": 10.0,
+      "w": 5.0,
+      "h": 3.0,
+      "items": [
+        {
+          "orderId": "WEBCK13",
+          "orderItemId": "WEBCK13",
+          "weight": 0.5,
+          "l": 5.0,
+          "w": 2.0,
+          "h": 1.0
+        },
+        {
+          "orderId": "WEBCK13",
+          "orderItemId": "WEBCK13/2",
+          "weight": 0.5,
+          "l": 5.0,
+          "w": 2.0,
+          "h": 1.0
+        },
+        {
+          "orderId": "WEBCK13",
+          "orderItemId": "WEBCK13/3",
+          "weight": 0.5,
+          "l": 5.0,
+          "w": 2.0,
+          "h": 1.0
+        }
+      ],
+      "goodsType": 1
+    }
+  ]
+}

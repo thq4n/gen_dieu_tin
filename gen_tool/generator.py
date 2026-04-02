@@ -117,7 +117,7 @@ def generate_payload(
 
     template_order = _base_order_from_template(template_payload)
 
-    if gen_input.gen_type == GenType.LAY_TONG:
+    if gen_input.gen_type in (GenType.LAY_TONG, GenType.LAY_TUNG_DON):
         last_order_id = order_id
         return GenResult(pickup_task_id=pickup_task_id, last_order_id=last_order_id, payload=payload)
 
@@ -134,8 +134,5 @@ def generate_payload(
 
         _normalize_goods_type_key(order)
         orders.append(order)
-
-    if gen_input.gen_type == GenType.LAY_TUNG_DON:
-        payload["orders"] = orders[:1]
 
     return GenResult(pickup_task_id=pickup_task_id, last_order_id=last_order_id, payload=payload)
