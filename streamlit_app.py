@@ -28,6 +28,30 @@ DEFAULT_RABBITMQ_ROUTING_KEY = "pickuptasks_queue"
 _GATE_KEYS = ("gate_display_name", "gate_rabbit_url", "gate_rabbit_user", "gate_rabbit_pass", "gate_rabbit_rk")
 
 
+def _rabbit_section_from_secrets() -> dict[str, Any]:
+    try:
+        sec = st.secrets
+    except FileNotFoundError:
+        return {}
+    try:
+        block = sec["rabbitmq"]
+    except (KeyError, TypeError):
+        return {}
+    if not hasattr(block, "get"):
+        return {}
+    return {
+        "base_url": str(block.get("base_url", "") or "").strip().rstrip("/"),
+        "username": str(block.get("username", "") or "").strip(),
+        "password": str(block.get("password", "") or ""),
+        "routing_key": str(block.get("routing_key", "") or "").strip(),
+        "verify_ssl": bool(block.get("verify_ssl", True)),
+    }
+
+
+def _rabbit_verify_ssl_from_secrets() -> bool:
+    return _rabbit_section_from_secrets().get("verify_ssl", True)
+
+
 def _render_copy_payload_button(copy_text: str, label: str) -> None:
     js_literal = json.dumps(copy_text)
     label_js = json.dumps(label)
@@ -90,19 +114,28 @@ def _restore_operator_from_disk() -> bool:
 
 def _render_operator_gate() -> None:
     prof = load_operator_profile()
+    sec_rmq = _rabbit_section_from_secrets()
     if "gate_display_name" not in st.session_state:
         st.session_state["gate_display_name"] = prof.display_name if prof else ""
     if "gate_rabbit_url" not in st.session_state:
         st.session_state["gate_rabbit_url"] = (
-            prof.rabbitmq_base_url if prof and prof.rabbitmq_base_url else "http://192.168.1.143:15672"
+            (prof.rabbitmq_base_url if prof and prof.rabbitmq_base_url else "")
+            or sec_rmq.get("base_url")
+            or "http://192.168.1.143:15672"
         )
     if "gate_rabbit_user" not in st.session_state:
-        st.session_state["gate_rabbit_user"] = prof.rabbitmq_username if prof else ""
+        st.session_state["gate_rabbit_user"] = (prof.rabbitmq_username if prof else "") or sec_rmq.get(
+            "username", ""
+        )
     if "gate_rabbit_pass" not in st.session_state:
-        st.session_state["gate_rabbit_pass"] = prof.rabbitmq_password if prof else ""
+        st.session_state["gate_rabbit_pass"] = (prof.rabbitmq_password if prof else "") or sec_rmq.get(
+            "password", ""
+        )
     if "gate_rabbit_rk" not in st.session_state:
         st.session_state["gate_rabbit_rk"] = (
-            prof.rabbitmq_routing_key if prof and prof.rabbitmq_routing_key else DEFAULT_RABBITMQ_ROUTING_KEY
+            (prof.rabbitmq_routing_key if prof and prof.rabbitmq_routing_key else "")
+            or sec_rmq.get("routing_key", "")
+            or DEFAULT_RABBITMQ_ROUTING_KEY
         )
 
     st.subheader("Nhập tên của bạn")
@@ -357,6 +390,7 @@ def main() -> None:
                     str(st.session_state["rabbitmq_password"]),
                     last_pl,
                     rk,
+                    verify=_rabbit_verify_ssl_from_secrets(),
                 )
                 if ok:
                     st.success(msg)
