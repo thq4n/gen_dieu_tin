@@ -30,6 +30,7 @@ class GenInput:
     customer: CustomerInput
     pickup_post_office_code: str
     pickup_post_office_id: str
+    pickup_post_office_name: str
     scheduled_pickup_date: str
 
 
@@ -223,6 +224,7 @@ def generate_payload(
     payload["pickupPostOfficeCode"] = gen_input.pickup_post_office_code.strip()
     # Theo yêu cầu: pickupPostOfficeId giống pickupPostOfficeCode.
     payload["pickupPostOfficeId"] = gen_input.pickup_post_office_code.strip()
+    payload["pickupPostOfficeName"] = gen_input.pickup_post_office_name.strip()
     payload["scheduledPickupDate"] = gen_input.scheduled_pickup_date.strip()
 
     pickup_task_id = next_pickup_task_id(prev_pickup_task_id)

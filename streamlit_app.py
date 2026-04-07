@@ -251,7 +251,7 @@ def main() -> None:
         partner_name = st.text_input("Partner name", value=defaults.partner_name)
 
         pickup_post_office_code_default = str(BASE_PAYLOAD.get("pickupPostOfficeCode", "")).strip()
-        pickup_post_office_id_default = str(BASE_PAYLOAD.get("pickupPostOfficeId", "")).strip()
+        pickup_post_office_name_default = str(BASE_PAYLOAD.get("pickupPostOfficeName", "")).strip()
         scheduled_pickup_date_default_str = str(BASE_PAYLOAD.get("scheduledPickupDate", "")).strip()
 
         def _default_scheduled_pickup_datetime(s: str) -> datetime:
@@ -275,7 +275,10 @@ def main() -> None:
             "Bưu cục (pickupPostOfficeCode)",
             value=pickup_post_office_code_default,
         )
-        # pickupPostOfficeId theo pickupPostOfficeCode (giống yêu cầu của bạn).
+        pickup_post_office_name = st.text_input(
+            "Tên bưu cục (pickupPostOfficeName)",
+            value=pickup_post_office_name_default,
+        )
         pickup_post_office_id = pickup_post_office_code
 
         scheduled_dt = st.datetime_input(
@@ -317,6 +320,7 @@ def main() -> None:
         customer=customer,
         pickup_post_office_code=pickup_post_office_code,
         pickup_post_office_id=pickup_post_office_id,
+        pickup_post_office_name=pickup_post_office_name,
         scheduled_pickup_date=scheduled_pickup_date,
     )
 
