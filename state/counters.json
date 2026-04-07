@@ -1,14 +1,16 @@
 {
   "pickup_task_id_by_type": {
-    "Lấy tổng": "BC-LAYTONG-4",
-    "Lấy từng đơn": "BC-TUNGDON-5",
-    "web api - có kiện": "WEB-CK-11",
-    "web api - ko kiện": "WEB-KK-6"
+    "BC": "DTQ-BC-2",
+    "HT": "DTQ-HT-4",
+    "NH": "DTQ-NH-2",
+    "KL": "DTQ-KL-0",
+    "WEB": "DTQ-WEB-1"
   },
   "order_id_by_type": {
-    "Lấy tổng": "LAY_TONG0000",
-    "Lấy từng đơn": "LAY_TUNG_DON0002",
-    "web api - có kiện": "WEBCK33",
-    "web api - ko kiện": "WEBKK0025"
+    "BC": "DTQ_BC_0000",
+    "HT": "DTQ_HT_0000",
+    "NH": "DTQ_NH_0000",
+    "KL": "DTQ_KL_0000",
+    "WEB": "DTQ_WEB_0005"
   }
 }

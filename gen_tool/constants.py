@@ -2,19 +2,14 @@ from __future__ import annotations
 
 from enum import Enum
 
+DieuTinType = str
 
-class GenType(str, Enum):
-    LAY_TONG = "Lấy tổng"
-    LAY_TUNG_DON = "Lấy từng đơn"
-    WEB_API_CO_KIEN = "web api - có kiện"
-    WEB_API_KO_KIEN = "web api - ko kiện"
-
-
-GEN_TYPES_ORDER: tuple[GenType, ...] = (
-    GenType.LAY_TONG,
-    GenType.LAY_TUNG_DON,
-    GenType.WEB_API_CO_KIEN,
-    GenType.WEB_API_KO_KIEN,
+DIEUTIN_TYPES_ORDER: tuple[str, ...] = (
+    "BC",
+    "HT",
+    "NH",
+    "KL",
+    "WEB",
 )
 
 
@@ -22,8 +17,21 @@ DEFAULT_TEMPLATE_XLSX = "Điều tin - Điều nhận.xlsx"
 
 
 class DispatchType(int, Enum):
-    BC = 1
-    WEB = 5
+    POST_OFFICE = 1
+    SYSTEM = 2
+    PROXY_PICKUP = 3
+    RETAIL = 4
+    WEB_API = 5
+
+
+DISPATCH_TYPE_FALLBACK_BY_DIEUTIN: dict[DieuTinType, DispatchType] = {
+    "BC": DispatchType.POST_OFFICE,
+    "HT": DispatchType.SYSTEM,
+    "HHT": DispatchType.SYSTEM,
+    "NH": DispatchType.PROXY_PICKUP,
+    "KL": DispatchType.RETAIL,
+    "WEB": DispatchType.WEB_API,
+}
 
 
 class GoodsType(int, Enum):
