@@ -1,0 +1,49 @@
+================================================================================
+  Gen Điều tin / Điều nhận — Hướng dẫn cho tester (Windows)
+================================================================================
+
+YÊU CẦU
+--------
+• Windows 10/11
+• Python 3.10 trở lên: https://www.python.org/downloads/
+  → Khi cài, tick "Add python.exe to PATH"
+• Mạng để tải thư viện lần đầu (pip)
+• RabbitMQ Management API phải truy cập được từ máy tester
+  (ví dụ http://IP:15672 — cùng mạng LAN với broker thì dùng IP LAN được)
+
+
+CÀI ĐẶT LẦN ĐẦU
+----------------
+1. Giải nén thư mục dự án (hoặc clone repo) vào ổ đĩa, ví dụ:
+   C:\Tools\gen_dieu_tin
+
+2. Mở thư mục con "windows"
+
+3. Double-click: setup.bat
+   → Tạo .venv và cài packages (có thể vài phút)
+
+4. Double-click: run_app.bat
+   → Mở trình duyệt tại http://localhost:8501
+
+
+CÁC LẦN SAU
+-----------
+Chỉ cần chạy run_app.bat
+
+
+GỬI BẢN CHO TESTER (người đóng gói)
+-------------------------------------
+• Không cần gửi thư mục .venv (tester sẽ chạy setup.bat)
+• Có thể nén cả project, bỏ qua: .venv, .git, __pycache__
+• Hoặc trên máy dev, mở PowerShell trong thư mục "windows" và chạy:
+    .\build_tester_zip.ps1
+  → File gen_dieu_tin_for_testers.zip sẽ nằm ở thư mục gốc project
+
+
+LỖI THƯỜNG GẶP
+---------------
+• "Chua cai dat" → Chạy setup.bat trước
+• Python không nhận → Cài lại Python, bật Add to PATH
+• Publish RabbitMQ lỗi kết nối → Kiểm tra URL/port 15672, firewall, broker có chạy không
+
+================================================================================

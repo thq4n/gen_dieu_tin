@@ -1,0 +1,3 @@
+Cai dat tren Windows (tester):
+  Mo thu muc windows\ va doc HUONG_DAN_TESTER.txt
+  Lan dau: setup.bat  ->  run_app.bat
