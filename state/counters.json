@@ -1,16 +1,21 @@
 {
-  "pickup_task_id_by_type": {
-    "BC": "DTQ-BC-2",
-    "HT": "DTQ-HT-4",
-    "NH": "DTQ-NH-2",
-    "KL": "DTQ-KL-0",
-    "WEB": "DTQ-WEB-1"
-  },
-  "order_id_by_type": {
-    "BC": "DTQ_BC_0000",
-    "HT": "DTQ_HT_0000",
-    "NH": "DTQ_NH_0000",
-    "KL": "DTQ_KL_0000",
-    "WEB": "DTQ_WEB_0005"
+  "version": 2,
+  "by_operator": {
+    "DTQ": {
+      "pickup_task_id_by_type": {
+        "BC": "DTQ-BC-5",
+        "HT": "DTQ-HT-5",
+        "NH": "DTQ-NH-8",
+        "KL": "DTQ-KL-0",
+        "WEB": "DTQ-WEB-2"
+      },
+      "order_id_by_type": {
+        "BC": "DTQ_BC_0000",
+        "HT": "DTQ_HT_0005",
+        "NH": "DTQ_NH_0000",
+        "KL": "DTQ_KL_0000",
+        "WEB": "DTQ_WEB_0010"
+      }
+    }
   }
 }

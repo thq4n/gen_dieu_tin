@@ -23,6 +23,7 @@ class CustomerInput:
 @dataclass(frozen=True)
 class GenInput:
     dieu_tin_type: DieuTinType
+    operator_prefix: str
     num_orders: int
     has_kien: bool
     items_per_order: int
@@ -105,15 +106,15 @@ def _make_items(order_id: str, count: int, template_order: dict[str, Any]) -> li
 _LAST_NUMBER_RE = re.compile(r"^(?P<prefix>.*?)(?P<num>\d+)$")
 
 
-def _next_dtq_order_id(dieu_tin_type: DieuTinType, prev_order_id: str) -> str:
+def _next_operator_order_id(operator_prefix: str, dieu_tin_type: DieuTinType, prev_order_id: str) -> str:
     prev = prev_order_id.strip()
     m = _LAST_NUMBER_RE.match(prev)
     if not m:
-        return f"DTQ_{dieu_tin_type}_1"
+        return f"{operator_prefix}_{dieu_tin_type}_1"
     num_s = m.group("num")
     width = len(num_s)
     num = int(num_s) + 1
-    return f"DTQ_{dieu_tin_type}_{num:0{width}d}"
+    return f"{m.group('prefix')}{num:0{width}d}"
 
 
 def _now_created_at() -> str:
@@ -239,7 +240,7 @@ def generate_payload(
     template_order["createdAt"] = payload["createdAt"]
 
     for _ in range(gen_input.num_orders):
-        order_id = _next_dtq_order_id(gen_input.dieu_tin_type, order_id)
+        order_id = _next_operator_order_id(gen_input.operator_prefix, gen_input.dieu_tin_type, order_id)
         last_order_id = order_id
         order = copy.deepcopy(template_order)
         order["orderId"] = order_id
