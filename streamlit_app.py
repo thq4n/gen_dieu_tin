@@ -8,6 +8,7 @@ from typing import Any
 
 import streamlit as st
 import streamlit.components.v1 as components
+from streamlit.errors import StreamlitSecretNotFoundError
 
 from gen_tool.constants import DIEUTIN_TYPES_ORDER, DieuTinType
 from gen_tool.generator import BASE_PAYLOAD, CustomerInput, GenInput, generate_payload
@@ -30,12 +31,8 @@ _GATE_KEYS = ("gate_display_name", "gate_rabbit_url", "gate_rabbit_user", "gate_
 
 def _rabbit_section_from_secrets() -> dict[str, Any]:
     try:
-        sec = st.secrets
-    except FileNotFoundError:
-        return {}
-    try:
-        block = sec["rabbitmq"]
-    except (KeyError, TypeError):
+        block = st.secrets["rabbitmq"]
+    except (FileNotFoundError, KeyError, TypeError, StreamlitSecretNotFoundError):
         return {}
     if not hasattr(block, "get"):
         return {}
