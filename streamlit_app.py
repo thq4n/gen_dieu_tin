@@ -33,7 +33,7 @@ from gen_tool.user_prefix import operator_prefix_from_display_name
 
 DEFAULT_RABBITMQ_ROUTING_KEY = "pickuptasks_queue"
 MAX_RECENT_POST_OFFICES = 10
-POST_OFFICE_DATA_PATH = Path(__file__).resolve().parent.parent / "data-postoffice.csv"
+POST_OFFICE_DATA_PATH = Path(__file__).resolve().parent / "data-postoffice.csv"
 _GATE_KEYS = ("gate_display_name", "gate_rabbit_url", "gate_rabbit_user", "gate_rabbit_pass", "gate_rabbit_rk")
 _FORM_FIELDS = (
     "gen_type",

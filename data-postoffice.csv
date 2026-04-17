@@ -1,0 +1,497 @@
+"PostOfficeCode","PostOfficeName","Latitude","Longitude"
+"GHN","Ga Hà Nội","21.025070594310485","105.83988189697267"
+"GSG","Ga Sài Gòn","10.78240160744072","106.6774726800451"
+"GDN","Ga Đà Nẵng","16.07147350461359","108.20932388305664"
+"SBPTD","Sân bay 30 Phan Thúc Duyện","10.805319368704744","106.6597524375286"
+"GHKDN","Ga hàng hóa - Cảng Hàng không Quốc Tế","16.05398913477162","108.20428133010866"
+"SBVIN","Sân Bay Vinh","18.726961714052322","105.66813468933107"
+"SBTSN","Sân bay 49 Trường Sơn","10.809733764027703","106.66350799690665"
+"SBNBHH","Sân bay Nội Bài - Cảng Hàng Hoá","21.21135457033362","105.80936908721925"
+"SBNB","Sân bay Nội Bài","21.2133201583064","105.80241680145265"
+"BXAS","Bến xe An Sương","10.84391800644865","106.61372211849441"
+"BXMT","Bến xe Miền Tây","10.741076705566108","106.61896421471492"
+"BXMDC","Bến xe Miền Đông (cũ)","10.814056147466474","106.71018258054771"
+"BXMDM","Bến xe Miền Đông Mới","10.880843423881057","106.81503653526308"
+"BXGB","Bến xe Giáp Bát","20.9803750668754","105.841497313242"
+"BXMD","Bến xe Mỹ Đình","21.0290009005145","105.780863369064"
+"BXGL","Bến xe Gia Lâm","21.0480680461671","105.878640869064"
+"DK2901S","Trung tâm đăng kiểm 29-01S","21.0287943","105.7839526"
+"DK2902S","Trung tâm đăng kiểm 29-02S","20.9686542","105.8380123"
+"DK2903S","Trung tâm đăng kiểm 29-03S","20.9389876","105.8497521"
+"DK2905S","Trung tâm đăng kiểm 29-05S","21.0456789","105.8892435"
+"DK2906S","Trung tâm đăng kiểm 29-06S","20.9923456","105.8134567"
+"DK5001S","Trung tâm đăng kiểm 50-01S","10.8045678","106.7123456"
+"DK5002S","Trung tâm đăng kiểm 50-02S","10.8123456","106.6234567"
+"DK5003S","Trung tâm đăng kiểm 50-03S","10.856789","106.6456789"
+"DK5004S","Trung tâm đăng kiểm 50-04S","10.8534567","106.6234512"
+"DK5006S","Trung tâm đăng kiểm 50-06S","10.8612345","106.6312345"
+"DK5007S","Trung tâm đăng kiểm 50-07S","10.8689012","106.7645678"
+"DK4301S","Trung tâm đăng kiểm 43-01S","16.0345678","108.2123456"
+"DK4302S","Trung tâm đăng kiểm 43-02S","16.0654321","108.1876543"
+"DK1501S","Trung tâm đăng kiểm 15-01S","20.8765432","106.6456789"
+"DK1502S","Trung tâm đăng kiểm 15-02S","20.854321","106.6876543"
+"DK6501S","Trung tâm đăng kiểm 65-01S","10.0123456","105.7876543"
+"DK6101S","Trung tâm đăng kiểm 61-01S","10.9876543","106.654321"
+"DK6102S","Trung tâm đăng kiểm 61-02S","10.9812345","106.6612345"
+"DK6001S","Trung tâm đăng kiểm 60-01S","10.954321","106.8234567"
+"BTTOYOTAMD","Toyota Mỹ Đình","21.0298765","105.7812345"
+"BTTOYOTATL","Toyota Thăng Long","20.9976543","105.8176543"
+"BTTOYOTAGL","Toyota Giải Phóng","20.9698765","105.8398765"
+"BTTOYOTATC","Toyota Tân Cảng","10.8054321","106.7198765"
+"BTTOYOTAPMH","Toyota Phú Mỹ Hưng","10.7312345","106.7012345"
+"BTTOYOTALT","Toyota Lý Thường Kiệt","10.7876543","106.654321"
+"BTTOYOTADN","Toyota Đà Nẵng","16.0712345","108.1934567"
+"BTHONDATL","Honda Ôtô Thăng Long","21.0312345","105.7934567"
+"BTHONDAHP","Honda Ôtô Hải Phòng","20.8612345","106.6123456"
+"BTHONDAPNT","Honda Ôtô Phước Nguyên Thành","10.8012345","106.6398765"
+"BTHONDAQ7","Honda Ôtô Quận 7","10.7234567","106.7298765"
+"BTVFHN","VinFast Hà Nội - Thanh Xuân","20.9923456","105.8623456"
+"BTVFHCM","VinFast TP.HCM - Võ Văn Kiệt","10.7523456","106.6823456"
+"BTVFDN","VinFast Đà Nẵng","16.0398765","108.2176543"
+"BTHYUNDAIVD","Hyundai Vinh Đức","21.0012345","105.8323456"
+"BTHYUNDAING","Hyundai Ngọc An","10.8098765","106.6412345"
+"BTMAZDAPC","Mazda Phạm Văn Đồng","21.0412345","105.7912345"
+"BTMAZDAGV","Mazda Gò Vấp","10.8312345","106.6512345"
+"BTMITSUBHN","Mitsubishi Hà Nội","21.0498765","105.7823456"
+"BTMITSUBHCM","Mitsubishi Sài Gòn","10.8098765","106.6623456"
+"BTFORDTB","Ford Thủ Đô","21.0287654","105.7798765"
+"BTFORDPMH","Ford Phú Mỹ Hưng","10.7287654","106.7087654"
+"BTMBZHN","Mercedes-Benz Hà Nội","21.0398765","105.7876543"
+"BTMBZHCM","Mercedes-Benz An Du","10.8076543","106.7176543"
+"BTKIAVD","Kia Vinh Đức","21.0023456","105.8334567"
+"BTKIAQ2","Kia Quận 2","10.8034567","106.7434567"
+"PUX","Phú Xuyên",NULL,NULL
+"ADD","Phòng hành chính","10.761684","106.69571"
+"ABH","An Bình","10.933828","106.862656"
+"ADG","An Đông","10.761412","106.67529"
+"AGG","An Giang","10.364","105.42695"
+"AKE","An Khê",NULL,NULL
+"ALC","An Lạc","10.747887","106.61711"
+"ALO","An Lão",NULL,NULL
+"AMH","An Minh",NULL,NULL
+"APG","An Phú Đông","10.862553","106.67451"
+"APU","An Phú","10.794587","106.74462"
+"ASN","Anh Sơn",NULL,NULL
+"ATI","Ân Thi",NULL,NULL
+"AVG","An Dương Vương","10.724884","106.62497"
+"AYA","Ayunpa","13.389847","108.44756"
+"BAR","Bà Rịa","10.455101","107.17221"
+"BBG","Bàu Bàng","11.233086","106.63151"
+"BBH","Bắc Bình","10.946001","108.10648"
+"BCN","Bình Chuẩn","10.761705","106.69568"
+"BCT","Bến Cát","11.123405","106.6187"
+"BCU","Bến Cầu",NULL,NULL
+"BDA","Bạch Đằng","21.00889","105.86673"
+"BDE","Bồ Đề","21.039413","105.8773"
+"BDG","Bù Đăng",NULL,NULL
+"BDN","Ba Đồn","17.754297","106.405785"
+"BDP","Bù Đốp","11.540623","106.90872"
+"BGG","Bắc Giang","21.290466","106.20141"
+"BHA","Biên Hoà","10.953423","106.86612"
+"BHG","Bình Hưng","10.714371","106.686646"
+"BHN","Bình Tân","10.752396","106.60111"
+"BHO","Buôn Hồ","12.8930235","108.26457"
+"BIG","Bình Giang",NULL,NULL
+"BKN","Bắc Kạn","22.149527","105.82738"
+"BLM","Bắc Từ Liêm","21.068222","105.78041"
+"BLU","Bạc Liêu","9.307786","105.72155"
+"BNC","Bến Lức","10.642221","106.49304"
+"BND","Buôn Đôn",NULL,NULL
+"BNH","Bắc Ninh","21.17254","106.07918"
+"BOC","Bảo Lộc","11.539853","107.77321"
+"BSN","Bình Sơn","15.300253","108.75802"
+"BTE","Bến Tre","10.271619","106.36236"
+"BTP","Buôn Trấp",NULL,NULL
+"BTT","Buôn Mê Thuột","12.683851","108.019714"
+"BUN","Bắc Tân Uyên","11.158959","106.68844"
+"CBG","Cao Bằng","22.684843","106.21992"
+"CCI","Củ Chi","10.9768505","106.50033"
+"CDC","Châu Đốc","10.71026","105.11513"
+"CGC","Cần Giuộc","10.630376","106.66654"
+"CHA","Cộng Hòa","10.797967","106.65081"
+"CHI","Cát Hải",NULL,NULL
+"CIH","Chí Linh","20.934158","106.30236"
+"CJT","Cư Jút","12.042918","107.68523"
+"CKE","Cẩm Khê",NULL,NULL
+"CKN","Cư Kuin",NULL,NULL
+"CLH","Cát Linh","21.015656","105.81975"
+"CLI","Cát Lái","10.783984","106.7622"
+"CLO","Cửa Lò","18.69194","105.655655"
+"CLY","Cai Lậy","10.38825","106.11447"
+"CMU","Cà Mau","9.175026","105.16346"
+"CMY","Cẩm Mỹ","10.939436","107.23807"
+"CPA","Cẩm Phả","21.009556","107.33748"
+"CPH","Chư Păh",NULL,NULL
+"CRG","Cái Răng","10.015002","105.78888"
+"CRH","Cam Ranh","11.926163","109.15802"
+"CTG","Cao Thắng","10.773516","106.68139"
+"CTH","Chơn Thành","11.406546","106.61424"
+"CUC","Châu Đức","10.455009","107.17211"
+"CUG","Cửu Long","10.812057","106.668106"
+"CUI","Chu Lai","15.449155","108.616905"
+"CUS","Chư Sê",NULL,NULL
+"312","B12 NHÓM 3",NULL,NULL
+"DAH","Đông Anh","21.15442","105.81307"
+"DAN","Dĩ An","10.891411","106.77585"
+"DBO","Đoàn Văn Bơ","10.759628","106.699265"
+"DCA","Đức Hòa","10.80912","106.47604"
+"DCU","Diễn Châu","18.964243","105.60183"
+"DDO","Đất Đỏ","10.455093","107.172195"
+"DGU","Đông Triều",NULL,NULL
+"DHA","Đông Hà","16.813976","107.111984"
+"DHE","Đức Huệ","10.809151","106.47595"
+"DHG","Đoan Hùng",NULL,NULL
+"DHI","Đồng Hới","17.462528","106.60676"
+"DIL","Di Linh","11.569484","108.11503"
+"DKD","Đăk Đoa",NULL,NULL
+"DKI","Đồng Khởi","10.765175","106.70313"
+"DKM","Đại Kim","20.97418","105.835495"
+"DKO","Đakao","10.7925625","106.698235"
+"DLC","Đại Lộc","15.881716","108.12087"
+"DLG","Đô Lương",NULL,NULL
+"DLH","Đức Linh","10.946076","108.106415"
+"DLT","Đà Lạt","11.9225445","108.43724"
+"DMH","Dương Minh Châu",NULL,NULL
+"DML","Đak Mil",NULL,NULL
+"DNA","Định Hóa",NULL,NULL
+"DNC","Điện Ngọc","15.90596","108.27713"
+"DND","Đơn Dương","11.822807","108.57186"
+"DNI","Dương Nội","20.97275","105.75076"
+"DNM","Đông Nam","10.970016","106.57595"
+"DPO","Đức Phổ","14.83913","108.927055"
+"DPU","Điện Biên Phủ","21.37941","103.01301"
+"DQN","Định Quán","11.196211","107.36532"
+"DSN","Đồ Sơn",NULL,NULL
+"DTG","Đức Trọng","11.741697","108.37521"
+"DTH","Đông Thạnh","10.87574","106.61162"
+"DTN","Duy Tân","21.043642","105.786"
+"DTP","Đồng Tháp","10.453769","105.65639"
+"DTU","Đại Từ",NULL,NULL
+"DUH","Duyên Hải",NULL,NULL
+"DUT","Dầu Tiếng","11.123398","106.63162"
+"DVG","Dịch Vọng","21.045113","105.79717"
+"DXI","Đồng Xoài","11.538651","106.90918"
+"DYN","Duy Tiên",NULL,NULL
+"EHO","Ea HLeo","13.309465","108.15231"
+"EKR","Ea Kar",NULL,NULL
+"ETN","Etown","10.800837","106.63976"
+"GNA","Gia Nghĩa","12.04362","107.6853"
+"GQO","Gò Quao","9.773547","105.3167"
+"GTY","Giao Thủy",NULL,NULL
+"GVN","Gia Viễn",NULL,NULL
+"HAA","Hạ Hòa",NULL,NULL
+"HAD","Hà Đông","20.977913","105.779396"
+"HAG","Hà Giang","22.812263","104.98099"
+"HAN","Hà Trung","20.011292","105.85472"
+"HBG","Hồng Bàng","20.8873","106.601654"
+"HBH","Hoà Bình","20.819118","105.33833"
+"HCG","Hòa Cường","16.040833","108.2118"
+"HDC","Hoài Đức","21.086731","105.67358"
+"HDG","Hải Dương","20.9342","106.302505"
+"HGA","Hưng Hà",NULL,NULL
+"HGH","Hoằng Hóa",NULL,NULL
+"HGI","Hoàng Mai",NULL,NULL
+"HHA","Hồng Hà","21.029108","105.85768"
+"HHO","Hưng Hóa",NULL,NULL
+"HHU","Hải Hậu",NULL,NULL
+"HIA","Hải Hà",NULL,NULL
+"HKH","Hòa Khánh","16.08615","108.14438"
+"HLG","Hải Lăng","16.811087","107.146164"
+"HLH","Hồng Lĩnh",NULL,NULL
+"HMN","Hóc Môn","10.862627","106.57802"
+"HMT","Hàm Tân","10.94602","108.10648"
+"HNN","Hoài Nhơn","14.216988","109.020775"
+"HNU","Hồng Ngự","10.804017","105.349396"
+"HOC","Hậu Lộc",NULL,NULL
+"HPA","Hiệp Hòa",NULL,NULL
+"HPH","Hiệp Bình","10.871265","106.74341"
+"HPP","Hiệp Phú","10.851298","106.79514"
+"HPT","Huỳnh Tấn Phát","10.7420845","106.72374"
+"HPU","Hòa Phú","11.07283","106.66818"
+"HQN","Hớn Quản","11.531865","106.5339"
+"HRG","Thành Trung","21.025726","105.9271"
+"NBI","Nội Bài","21.21245","105.7846"
+"HTH","Hà Tĩnh","18.321152","105.91921"
+"HTN","Hà Tiên","10.286279","104.648994"
+"HTU","Hoàng Văn Thụ","20.982513","105.8587"
+"HUE","Huế","16.460096","107.59036"
+"HUG","Hậu Giang","9.766808","105.46228"
+"HXH","Hàng Xanh","10.803569","106.719376"
+"HYN","Hưng Yên","20.653719","106.06156"
+"BOM","Board of Management",NULL,NULL
+"KAH","Kỳ Anh","18.070917","106.37216"
+"KBG","Kim Bảng",NULL,NULL
+"KBH","Khánh Bình","11.047088","106.715324"
+"KCU","Khoái Châu",NULL,NULL
+"KDH","Khương Đình","20.990387","105.81199"
+"KGG","Kiên Giang","9.97874","105.102425"
+"KHM","Kinh Môn",NULL,NULL
+"KLG","Kiên Lương","10.286092","104.65061"
+"PUR","Phú Riềng","11.74911","107.016975"
+"KMH","Kim Thành",NULL,NULL
+"KMI","Khương Mai","20.996498","105.79934"
+"KMN","Kim Sơn",NULL,NULL
+"KNG","Krông Năng",NULL,NULL
+"KTG","Kiến Tường","10.537068","106.402794"
+"KTM","Kon Tum","14.346826","108.01516"
+"KXG","Kiến Xương",NULL,NULL
+"LAN","Long An","10.551964","106.41655"
+"LBN","Long Biên","21.027908","105.892"
+"LCI","Lào Cai","22.502085","103.94541"
+"LCN","Lục Ngạn",NULL,NULL
+"LCU","Lai Châu","22.395885","103.44859"
+"LED","Lê Duẩn","10.790726","106.69433"
+"LEN","Lê Minh Xuân","10.76708","106.56275"
+"LGD","Long Điền","10.455096","107.17222"
+"LGI","La Gi","10.946144","108.106415"
+"LGN","Lương Sơn",NULL,NULL
+"LKG","Lê Văn Khương","10.863716","106.63351"
+"LKH","Long Khánh","10.939515","107.23812"
+"LMA","Lâm Hà","11.856186","108.20859"
+"LMO","Lâm Thao",NULL,NULL
+"LNM","Lục Nam","21.311005","106.393456"
+"LNN","Lý Nhân",NULL,NULL
+"LPH","Lập Thạch",NULL,NULL
+"LQN","Lạc Long Quân","10.773547","106.63216"
+"LSN","Lạng Sơn","21.85592","106.77068"
+"LTH","Long Thành","10.846352","106.9296"
+"LTI","Lương Tài",NULL,NULL
+"LTY","Lệ Thủy","17.462242","106.6068"
+"MCI","Móng Cái",NULL,NULL
+"MCU","Mộc Châu",NULL,NULL
+"MDC","Mỹ Đức","20.977957","105.77946"
+"MDH","Mỹ Đình","21.034424","105.77217"
+"MDK","M’Đrắk","12.782334","108.74498"
+"MLH","Mê Linh","21.193905","105.77041"
+"MSN","Mai Sơn",NULL,NULL
+"MTI","Mễ Trì","20.99202","105.77881"
+"24A","B4A NHÓM 2",NULL,NULL
+"23B","B3B NHÓM 2",NULL,NULL
+"N4A","Ngoại tuyến vùng 4","10.045162","105.74686"
+"NAH","Nguyễn An Ninh","10.361313","107.07616"
+"NBE","Nhà Bè","10.667049","106.724266"
+"NBH","Ninh Bình","20.245596","105.994514"
+"NCG","Nông Cống","19.825117","105.79624"
+"NCH","Nguyễn Hữu Cảnh","10.795019","106.71875"
+"NCL","Ngọc Lặc",NULL,NULL
+"NDH","Nam Định","20.423845","106.15417"
+"NHE","Nguyễn Huệ","10.7652025","106.70317"
+"NHG","Nghĩa Hưng",NULL,NULL
+"NHI","Ngọc Hồi","14.534425","107.916405"
+"NHN","Ngọc Hiển","8.761465","104.99856"
+"NKH","Ngọc Khánh","21.043089","105.809944"
+"NKM","Nguyễn Kiệm","10.8178215","106.683846"
+"NKU","Ninh Kiều","10.04801","105.78301"
+"NLC","Nghi Lộc",NULL,NULL
+"NLG","Nơ Trang Long","10.8111515","106.70782"
+"NMN","Nam Đàn",NULL,NULL
+"NNA","Ninh Hòa","12.551826","109.161224"
+"NNN","Nga Sơn",NULL,NULL
+"NOH","Nguyễn Oanh","10.832142","106.68092"
+"NON","Nho Quan",NULL,NULL
+"NPG","Nguyễn Tri Phương","10.761697","106.695656"
+"NQN","Ngô Quyền","20.861788","106.7213"
+"NTG","Nha Trang","12.239563","109.16359"
+"NTH","Nhơn Trạch","10.74031","106.943146"
+"NTI","Nguyễn Trãi","10.761686","106.69564"
+"PAN","Phước An",NULL,NULL
+"PBH","Phú Bình","21.458355","105.886986"
+"PCH","Phước Bình","10.813101","106.78542"
+"PCT","Phù Cát","14.016894","109.05925"
+"PCU","Phù Cừ",NULL,NULL
+"PCY","Phúc Yên","21.233105","105.72767"
+"PLG","Phan Xích Long","10.761718","106.695656"
+"PDN","Phong Điền","16.573814","107.381836"
+"PGO","Phú Giáo",NULL,NULL
+"PLC","Phú Lộc","16.285759","107.8562"
+"PLU","Pleiku_Gia lai","13.991113","107.990425"
+"PLY","Phủ Lý","20.531937","105.92022"
+"PMY","Phú Mỹ","10.738211","106.70707"
+"PNH","Phước Ninh","16.057314","108.21686"
+"PNI","Phố Nối","20.940538","106.03232"
+"PNN","Phú Nhuận","10.808601","106.67724"
+"POG","Phước Long",NULL,NULL
+"PON","Phổ Yên","21.44638","105.89135"
+"PQC","Phú Quốc","10.229912","103.96425"
+"PRG","Phan Rang","11.548988","108.97977"
+"PTH","Phạm Ngọc Thạch","10.787628","106.674126"
+"PTR","Pasteur","10.7906685","106.684"
+"PTT","Phan Thiết","10.950668","108.11157"
+"PUH","Phù Ninh",NULL,NULL
+"PUO","Phú Thọ","21.401781","105.20293"
+"Q08","Quận 8","10.735298","106.68001"
+"Q11","Quận 11","10.764242","106.652245"
+"QGG","Quang Trung","10.84312","106.656334"
+"QGP","Quảng Phú",NULL,NULL
+"QHP","Quỳ Hợp",NULL,NULL
+"QLU","Quỳnh Lưu",NULL,NULL
+"QNH","Quảng Ninh","20.96167","107.09484"
+"QNI","Quảng Ngãi","15.113976","108.810425"
+"QNN","Quy Nhơn","13.776889","109.18634"
+"QOI","Quốc Oai","21.012896","105.64256"
+"QPU","Quỳnh Phụ",NULL,NULL
+"QYN","Quảng Yên",NULL,NULL
+"SDC","Sa Đéc","10.3017025","105.7599"
+"SHA","Sơn Hòa","13.072881","108.97903"
+"SHH","Sư Vạn Hạnh","10.779947","106.66171"
+"SLA","Sơn La","21.328396","103.90775"
+"SNY","Sơn Tây",NULL,NULL
+"SSN","Sầm Sơn",NULL,NULL
+"STG","Sóc Trăng","9.630828","105.9654"
+"TAA","Thanh Hà",NULL,NULL
+"TAG","Tam Nông","10.689033","105.43736"
+"TAH","Thuận Thành",NULL,NULL
+"TBA","Thanh Ba",NULL,NULL
+"TBG","Trảng Bàng","11.04351","106.34268"
+"TBH","Thái Bình","20.447327","106.33078"
+"TBN","Tân Biên","11.32241","106.09954"
+"TCG","Thanh Chương",NULL,NULL
+"TCN","Trực Ninh",NULL,NULL
+"TCU","Tân Châu",NULL,NULL
+"TDN","Thảo Điền","10.789313","106.731445"
+"TDO","Tây Đô","10.025487","105.74763"
+"TDP","Tam Điệp",NULL,NULL
+"TDU","Tiên Du","21.13295","105.99742"
+"TEN","Triệu Sơn",NULL,NULL
+"TGA","Tĩnh Gia","19.445051","105.780304"
+"TGG","Tiền Giang","10.3519945","106.32708"
+"TGH","Thăng Bình","15.696804","108.35214"
+"TGN","Tràng Tiền","21.026552","105.843"
+"TGO","Trường Thọ","10.834541","106.7542"
+"THA","Thanh Hoá","19.788609","105.805466"
+"THH","Thạch Thành",NULL,NULL
+"THI","Tiền Hải",NULL,NULL
+"THO","Tây Hồ","21.067358","105.81023"
+"THS","Thanh Sơn",NULL,NULL
+"THX","Thọ Xuân",NULL,NULL
+"THY","Thanh Thủy",NULL,NULL
+"TIA","Thái Hòa",NULL,NULL
+"TKE","Thanh Khê","16.057486","108.20637"
+"TKH","Trung Kính","21.022362","105.79174"
+"TKY","Tam Kỳ","15.586936","108.47121"
+"TLG","Tiên Lãng",NULL,NULL
+"TLH","Tánh Linh",NULL,NULL
+"TMD","Tam Đảo",NULL,NULL
+"TMG","Tam Dương",NULL,NULL
+"TMN","Thanh Miện",NULL,NULL
+"TMT","Thủ Dầu Một","11.0061035","106.66872"
+"TNA","Thuận An","10.919117","106.72793"
+"TNC","Trà Nóc","10.099635","105.71368"
+"TNH","Tây Ninh","11.315505","106.07813"
+"TNI","Tân Sơn Nhì","10.796685","106.63147"
+"TNN","Thái Nguyên","21.588745","105.82142"
+"TNP","Tân Đông Hiệp","10.916241","106.78535"
+"TNU","Tân phú","11.292606","107.494965"
+"TOA","Thanh Oai","20.945108","105.75422"
+"TOK","Tô Ký","10.840828","106.6278"
+"TOT","Thốt Nốt","10.300311","105.507805"
+"TPG","Tân Phong","10.737589","106.706116"
+"TQG","Tuyên Quang","21.796133","105.2102"
+"TTG","Tôn Đức Thắng","21.008083","105.83154"
+"TTH","Tân Thành","10.598564","107.05403"
+"TTI","Thanh Trì","20.94691","105.84515"
+"TTY","Thái Thụy",NULL,NULL
+"TUH","Thiệu Hóa",NULL,NULL
+"TUY","Tứ Kỳ",NULL,NULL
+"TVG","Triệu Việt Vương","20.99688","105.84421"
+"TVH","Trà Vinh","9.915263","106.336075"
+"TYA","Tuy Hòa","13.119039","109.2805"
+"TYG","Tuy Phong",NULL,NULL
+"TYN","Tân Yên",NULL,NULL
+"TYS","Tây Sơn","13.9078","108.9174"
+"UBI","Uông Bí","21.03421","106.74898"
+"UHA","Ứng Hòa",NULL,NULL
+"VBN","Vụ Bản",NULL,NULL
+"VBO","Vĩnh Bảo",NULL,NULL
+"VCU","Vĩnh Cữu","11.015726","106.842545"
+"VDN","Vân Đồn",NULL,NULL
+"VHH","Vĩnh Hải","12.28084","109.19758"
+"VHT","Vĩnh Thuận","9.563919","105.21591"
+"VIH","Vinh","18.691174","105.66828"
+"VLC","Vĩnh Lộc","10.80376","106.593216"
+"VLG","Vĩnh Long","10.259089","105.94715"
+"VLH","Vĩnh Linh","17.086676","106.988335"
+"VNH","Vạn Ninh","12.681789","109.21766"
+"VNI","Võ Nhai",NULL,NULL
+"VTG","Vĩnh Tường",NULL,NULL
+"VTI","Việt Trì","21.318762","105.37466"
+"VYN","Vĩnh Yên","21.317951","105.61495"
+"XLC","Xuân Lộc","10.941183","107.24087"
+"XMC","Xuyên Mộc","10.455091","107.17221"
+"XPG","Xuân Phương","21.026924","105.740555"
+"XTG","Xuân Trường",NULL,NULL
+"YBI","Yên Bái","21.720514","104.91552"
+"YDG","Yên Dũng","21.290543","106.20141"
+"YDH","Yên Định",NULL,NULL
+"YLC","Yên Lạc",NULL,NULL
+"YMO","Yên Mô",NULL,NULL
+"YTE","Yên Thế",NULL,NULL
+"YTH","Yên Thành",NULL,NULL
+"YYN","Ý Yên",NULL,NULL
+"CNB","Công nghệ Bắc","21.021755","105.789406"
+"DMD","Data Management Department",NULL,NULL
+"FAD","Phòng tài chính kế toán","10.761684","106.69571"
+"HDCD","Hội đồng cổ đông",NULL,NULL
+"BGD","Ban giám đốc",NULL,NULL
+"BSD","Phòng Kinh Doanh","10.761684","106.69571"
+"CNN","Phòng Công nghệ","10.761684","106.69571"
+"CSD","Phòng CS","10.761684","106.69571"
+"D11","Đại lý 1.1","21.009977","105.791664"
+"D12","Đại lý 1.2","20.996817","105.80652"
+"D32","Đại lý 3.2","10.815587","106.6715"
+"D33","Đại lý 3.3","10.802643","106.65893"
+"HDQT","Hội đồng quản trị",NULL,NULL
+"N3A","Ngoại tuyến vùng 3A","10.823099","106.62966"
+"N3B","Ngoại tuyến vùng 3B","11.325402","106.47702"
+"NBD","Khối Bán Hàng Miền Bắc",NULL,NULL
+"PDD","Product Development Department",NULL,NULL
+"111","B11 NHÓM 1",NULL,NULL
+"112","B12 NHÓM 1",NULL,NULL
+"113","B13 NHÓM 1",NULL,NULL
+"11B","B1B NHÓM 1",NULL,NULL
+"132","B32 NHÓM 1",NULL,NULL
+"133","B33 NHÓM 1",NULL,NULL
+"134","B34 NHÓM 1",NULL,NULL
+"PSD","Product Success Department",NULL,NULL
+"QCD","Phòng chất lượng","10.761684","106.69571"
+"QLV","Quản Lý Vùng","10.761684","106.69571"
+"RND","Research Development","10.761684","106.69571"
+"SBD","Khối Bán Hàng Miền Nam",NULL,NULL
+"232","B32 NHÓM 2",NULL,NULL
+"233","B33 NHÓM 2",NULL,NULL
+"234","B34 NHÓM 2",NULL,NULL
+"311","B11 NHÓM 3",NULL,NULL
+"331","B31 NHÓM 3",NULL,NULL
+"332","B32 NHÓM 3",NULL,NULL
+"333","B33 NHÓM 3",NULL,NULL
+"33B","B3B NHÓM 3",NULL,NULL
+"K1A","Khai thác vùng 1A","21.158157","105.77678"
+"K2A","Khai thác vùng 2A","16.006027","108.183044"
+"K3A","Khai thác vùng 3A","10.800499","106.65224"
+"K3B","Khai thác vùng 3B","10.923943","106.7786"
+"KLY","Khối Đại Lý",NULL,NULL
+"KTB","Kế toán Bắc","21.016659","105.7819"
+"KTC","Khối Khai Thác",NULL,NULL
+"KTE","Khối Quốc Tế",NULL,NULL
+"MKD","Phòng Marketing","10.761684","106.69571"
+"334","B34 Nhóm 3",NULL,NULL
+"22A","B2A NHÓM 2",NULL,NULL
+"34A","B4A NHÓM 3",NULL,NULL
+"411","B11 NHÓM 4",NULL,NULL
+"B33","B33","10.76161","106.69576"
+"BKS","Ban kiểm soát",NULL,NULL
+"BOE","Back Office",NULL,NULL
+"13B","B3B NHÓM 1",NULL,NULL
+"14A","B4A NHÓM 1",NULL,NULL
+"212","B12 NHÓM 2",NULL,NULL
+"21B","B1B NHÓM 2",NULL,NULL
+"HRD","Phòng nhân sự","10.761684","106.69571"
+"IOS","Trung Tâm Dịch Vụ Quốc Tế Miền Nam","10.800429","106.65211"
+"ITD","Information Technology Department",NULL,NULL
+"N1A","Ngoại tuyến vùng 1A","21.027765","105.83416"
+"N2A","Ngoại tuyến vùng 2","16.054407","108.20216"
+"PLD","Phòng kế hoạch","10.761684","106.69571"
+"SMY","Sông Mây","10.962863","106.94068"
+"K4A","Khai thác vùng 4A","10.015238","105.78905"
+"KBN","Khối Phòng Ban",NULL,NULL
+"KHH","Khối Vận Hành",NULL,NULL
