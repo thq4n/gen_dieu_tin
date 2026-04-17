@@ -204,6 +204,13 @@ def _to_float_or_default(value: Any, default: float) -> float:
         return default
 
 
+def _to_int_or_default(value: Any, default: int) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
 def _init_form_state(operator_prefix: str, defaults: Defaults) -> None:
     if st.session_state.get("_form_state_inited") == operator_prefix:
         return
@@ -232,11 +239,38 @@ def _init_form_state(operator_prefix: str, defaults: Defaults) -> None:
         "item_width": float(BASE_PAYLOAD["orders"][0]["items"][0]["w"]),
         "item_height": float(BASE_PAYLOAD["orders"][0]["items"][0]["h"]),
     }
+    normalized: dict[str, Any] = {
+        "gen_type": str(saved.get("gen_type", form_defaults["gen_type"])),
+        "sender_id": str(saved.get("sender_id", form_defaults["sender_id"])),
+        "sender_name": str(saved.get("sender_name", form_defaults["sender_name"])),
+        "sender_phone": str(saved.get("sender_phone", form_defaults["sender_phone"])),
+        "sender_email": str(saved.get("sender_email", form_defaults["sender_email"])),
+        "partner_id": str(saved.get("partner_id", form_defaults["partner_id"])),
+        "partner_name": str(saved.get("partner_name", form_defaults["partner_name"])),
+        "pickup_post_office_code_selected": str(saved.get("pickup_post_office_code_selected", "")).strip(),
+        "pickup_time_hms": str(saved.get("pickup_time_hms", form_defaults["pickup_time_hms"])),
+        "custom_location": bool(saved.get("custom_location", form_defaults["custom_location"])),
+        "pickup_longitude_input": _to_float_or_default(
+            saved.get("pickup_longitude_input"),
+            float(form_defaults["pickup_longitude_input"]),
+        ),
+        "pickup_latitude_input": _to_float_or_default(
+            saved.get("pickup_latitude_input"),
+            float(form_defaults["pickup_latitude_input"]),
+        ),
+        "has_don": bool(saved.get("has_don", form_defaults["has_don"])),
+        "num_orders": _to_int_or_default(saved.get("num_orders"), int(form_defaults["num_orders"])),
+        "has_kien": bool(saved.get("has_kien", form_defaults["has_kien"])),
+        "items_per_order": _to_int_or_default(saved.get("items_per_order"), int(form_defaults["items_per_order"])),
+        "order_length": _to_float_or_default(saved.get("order_length"), float(form_defaults["order_length"])),
+        "order_width": _to_float_or_default(saved.get("order_width"), float(form_defaults["order_width"])),
+        "order_height": _to_float_or_default(saved.get("order_height"), float(form_defaults["order_height"])),
+        "item_length": _to_float_or_default(saved.get("item_length"), float(form_defaults["item_length"])),
+        "item_width": _to_float_or_default(saved.get("item_width"), float(form_defaults["item_width"])),
+        "item_height": _to_float_or_default(saved.get("item_height"), float(form_defaults["item_height"])),
+    }
     for field, default_value in form_defaults.items():
-        if field in st.session_state:
-            continue
-        saved_value = saved.get(field, default_value)
-        st.session_state[field] = saved_value
+        st.session_state[field] = normalized.get(field, default_value)
     st.session_state["_form_state_inited"] = operator_prefix
 
 
@@ -245,6 +279,21 @@ def _save_form_state(operator_prefix: str) -> None:
     for field in _FORM_FIELDS:
         payload[field] = st.session_state.get(field)
     save_form_state(operator_prefix, payload)
+
+
+def _resolve_saved_post_office_code(
+    operator_prefix: str,
+    valid_codes: set[str],
+    fallback_code: str,
+) -> str:
+    current_code = str(st.session_state.get("pickup_post_office_code_selected", "")).strip()
+    if current_code in valid_codes:
+        return current_code
+    saved = load_form_state(operator_prefix)
+    saved_code = str(saved.get("pickup_post_office_code_selected", "")).strip()
+    if saved_code in valid_codes:
+        return saved_code
+    return fallback_code
 
 
 def _restore_operator_from_disk() -> bool:
@@ -419,11 +468,11 @@ def main() -> None:
             if pickup_post_office_code_default in post_office_by_code
             else (ordered_codes[0] if ordered_codes else "")
         )
-        if (
-            "pickup_post_office_code_selected" not in st.session_state
-            or st.session_state["pickup_post_office_code_selected"] not in post_office_by_code
-        ):
-            st.session_state["pickup_post_office_code_selected"] = default_code
+        st.session_state["pickup_post_office_code_selected"] = _resolve_saved_post_office_code(
+            operator_prefix,
+            set(post_office_by_code.keys()),
+            default_code,
+        )
         if ordered_codes:
             selected_code = st.selectbox(
                 "Bưu cục",
@@ -435,6 +484,7 @@ def main() -> None:
                     else code
                 ),
             )
+            _save_form_state(operator_prefix)
         else:
             selected_code = ""
             st.warning(f"Không tìm thấy dữ liệu bưu cục tại {POST_OFFICE_DATA_PATH}.")
@@ -471,10 +521,8 @@ def main() -> None:
                     st.session_state.get("pickup_time_hms"),
                     datetime.now(),
                 )
-        scheduled_seed = st.session_state["scheduled_pickup_dt"]
         scheduled_dt = st.datetime_input(
             "Ngày giờ pick-up (scheduledPickupDate)",
-            value=scheduled_seed,
             key="scheduled_pickup_dt",
         )
         st.session_state["pickup_time_hms"] = scheduled_dt.strftime("%H:%M:%S")

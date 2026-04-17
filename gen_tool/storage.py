@@ -10,8 +10,9 @@ from typing import Any
 from gen_tool.constants import DieuTinType
 
 
-STATE_DIR = Path("state")
-OUTPUT_DIR = Path("output")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+STATE_DIR = PROJECT_ROOT / "state"
+OUTPUT_DIR = PROJECT_ROOT / "output"
 
 _COUNTERS_VERSION = 2
 
