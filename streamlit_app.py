@@ -197,6 +197,13 @@ def _today_with_same_time(dt: datetime) -> datetime:
     return now.replace(hour=dt.hour, minute=dt.minute, second=dt.second, microsecond=0)
 
 
+def _to_float_or_default(value: Any, default: float) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
 def _init_form_state(operator_prefix: str, defaults: Defaults) -> None:
     if st.session_state.get("_form_state_inited") == operator_prefix:
         return
@@ -541,9 +548,18 @@ def main() -> None:
                     format="%.2f",
                     key="order_height",
                 )
-            item_length = float(st.session_state.get("item_length", BASE_PAYLOAD["orders"][0]["items"][0]["l"]))
-            item_width = float(st.session_state.get("item_width", BASE_PAYLOAD["orders"][0]["items"][0]["w"]))
-            item_height = float(st.session_state.get("item_height", BASE_PAYLOAD["orders"][0]["items"][0]["h"]))
+            item_length = _to_float_or_default(
+                st.session_state.get("item_length"),
+                float(BASE_PAYLOAD["orders"][0]["items"][0]["l"]),
+            )
+            item_width = _to_float_or_default(
+                st.session_state.get("item_width"),
+                float(BASE_PAYLOAD["orders"][0]["items"][0]["w"]),
+            )
+            item_height = _to_float_or_default(
+                st.session_state.get("item_height"),
+                float(BASE_PAYLOAD["orders"][0]["items"][0]["h"]),
+            )
             if has_kien:
                 items_per_order = st.number_input("Số kiện / đơn", min_value=1, max_value=500, step=1, key="items_per_order")
                 st.markdown("**Thông tin kiện**")
@@ -573,12 +589,21 @@ def main() -> None:
                         key="item_height",
                     )
         else:
-            order_length = float(st.session_state.get("order_length", BASE_PAYLOAD["orders"][0]["l"]))
-            order_width = float(st.session_state.get("order_width", BASE_PAYLOAD["orders"][0]["w"]))
-            order_height = float(st.session_state.get("order_height", BASE_PAYLOAD["orders"][0]["h"]))
-            item_length = float(st.session_state.get("item_length", BASE_PAYLOAD["orders"][0]["items"][0]["l"]))
-            item_width = float(st.session_state.get("item_width", BASE_PAYLOAD["orders"][0]["items"][0]["w"]))
-            item_height = float(st.session_state.get("item_height", BASE_PAYLOAD["orders"][0]["items"][0]["h"]))
+            order_length = _to_float_or_default(st.session_state.get("order_length"), float(BASE_PAYLOAD["orders"][0]["l"]))
+            order_width = _to_float_or_default(st.session_state.get("order_width"), float(BASE_PAYLOAD["orders"][0]["w"]))
+            order_height = _to_float_or_default(st.session_state.get("order_height"), float(BASE_PAYLOAD["orders"][0]["h"]))
+            item_length = _to_float_or_default(
+                st.session_state.get("item_length"),
+                float(BASE_PAYLOAD["orders"][0]["items"][0]["l"]),
+            )
+            item_width = _to_float_or_default(
+                st.session_state.get("item_width"),
+                float(BASE_PAYLOAD["orders"][0]["items"][0]["w"]),
+            )
+            item_height = _to_float_or_default(
+                st.session_state.get("item_height"),
+                float(BASE_PAYLOAD["orders"][0]["items"][0]["h"]),
+            )
 
         st.caption("Tắt 'Có đơn': không tạo orders. Bật 'Đơn kiện': nhập số kiện/đơn.")
 

@@ -16,6 +16,14 @@ OUTPUT_DIR = Path("output")
 _COUNTERS_VERSION = 2
 
 
+def _default_counters_root() -> dict[str, Any]:
+    return {"version": _COUNTERS_VERSION, "by_operator": {}}
+
+
+def _default_by_operator_root() -> dict[str, Any]:
+    return {"by_operator": {}}
+
+
 @dataclass(frozen=True)
 class Counters:
     pickup_task_id_by_type: dict[str, str]
@@ -38,9 +46,19 @@ def _form_state_path() -> Path:
     return STATE_DIR / "form_state.json"
 
 
+def _ensure_json_file(path: Path, default_content: dict[str, Any]) -> None:
+    if path.exists():
+        return
+    path.write_text(json.dumps(default_content, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def ensure_dirs() -> None:
     STATE_DIR.mkdir(parents=True, exist_ok=True)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    _ensure_json_file(_state_path(), _default_counters_root())
+    _ensure_json_file(_operator_profile_path(), {})
+    _ensure_json_file(_recent_post_office_path(), _default_by_operator_root())
+    _ensure_json_file(_form_state_path(), _default_by_operator_root())
 
 
 @dataclass(frozen=True)
@@ -199,13 +217,13 @@ def _migrate_legacy_to_v2(data: dict[str, Any]) -> dict[str, Any]:
 def _read_counters_file() -> dict[str, Any]:
     p = _state_path()
     if not p.exists():
-        return {"version": _COUNTERS_VERSION, "by_operator": {}}
+        return _default_counters_root()
     try:
         raw = json.loads(p.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         backup = p.with_suffix(f"{p.suffix}.invalid")
         p.rename(backup)
-        reset_root = {"version": _COUNTERS_VERSION, "by_operator": {}}
+        reset_root = _default_counters_root()
         _write_counters_root(reset_root)
         return reset_root
     if raw.get("version") == _COUNTERS_VERSION and isinstance(raw.get("by_operator"), dict):
