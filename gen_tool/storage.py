@@ -200,7 +200,14 @@ def _read_counters_file() -> dict[str, Any]:
     p = _state_path()
     if not p.exists():
         return {"version": _COUNTERS_VERSION, "by_operator": {}}
-    raw = json.loads(p.read_text(encoding="utf-8"))
+    try:
+        raw = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        backup = p.with_suffix(f"{p.suffix}.invalid")
+        p.rename(backup)
+        reset_root = {"version": _COUNTERS_VERSION, "by_operator": {}}
+        _write_counters_root(reset_root)
+        return reset_root
     if raw.get("version") == _COUNTERS_VERSION and isinstance(raw.get("by_operator"), dict):
         return raw
     migrated = _migrate_legacy_to_v2(raw)
