@@ -32,6 +32,14 @@ class GenInput:
     pickup_post_office_id: str
     pickup_post_office_name: str
     scheduled_pickup_date: str
+    pickup_longitude: float
+    pickup_latitude: float
+    order_length: float
+    order_width: float
+    order_height: float
+    item_length: float
+    item_width: float
+    item_height: float
 
 
 @dataclass(frozen=True)
@@ -226,6 +234,8 @@ def generate_payload(
     payload["pickupPostOfficeId"] = gen_input.pickup_post_office_code.strip()
     payload["pickupPostOfficeName"] = gen_input.pickup_post_office_name.strip()
     payload["scheduledPickupDate"] = gen_input.scheduled_pickup_date.strip()
+    payload["pickupLongitude"] = gen_input.pickup_longitude
+    payload["pickupLatitude"] = gen_input.pickup_latitude
 
     pickup_task_id = next_pickup_task_id(prev_pickup_task_id)
     payload["pickupTaskId"] = pickup_task_id
@@ -240,6 +250,16 @@ def generate_payload(
 
     template_order = _base_order_from_template(BASE_PAYLOAD)
     template_order["createdAt"] = payload["createdAt"]
+    template_order["l"] = gen_input.order_length
+    template_order["w"] = gen_input.order_width
+    template_order["h"] = gen_input.order_height
+    template_items = template_order.get("items")
+    if isinstance(template_items, list):
+        for item in template_items:
+            if isinstance(item, dict):
+                item["l"] = gen_input.item_length
+                item["w"] = gen_input.item_width
+                item["h"] = gen_input.item_height
 
     for _ in range(gen_input.num_orders):
         order_id = _next_operator_order_id(gen_input.operator_prefix, gen_input.dieu_tin_type, order_id)

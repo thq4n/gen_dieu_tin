@@ -30,6 +30,14 @@ def _operator_profile_path() -> Path:
     return STATE_DIR / "operator_profile.json"
 
 
+def _recent_post_office_path() -> Path:
+    return STATE_DIR / "recent_post_offices.json"
+
+
+def _form_state_path() -> Path:
+    return STATE_DIR / "form_state.json"
+
+
 def ensure_dirs() -> None:
     STATE_DIR.mkdir(parents=True, exist_ok=True)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -43,6 +51,7 @@ class OperatorProfile:
     rabbitmq_username: str = ""
     rabbitmq_password: str = ""
     rabbitmq_routing_key: str = "pickuptasks_queue"
+    auto_publish: bool = True
 
 
 def load_operator_profile() -> OperatorProfile | None:
@@ -63,6 +72,7 @@ def load_operator_profile() -> OperatorProfile | None:
         rabbitmq_username=str(data.get("rabbitmq_username", "")).strip(),
         rabbitmq_password=str(data.get("rabbitmq_password", "")),
         rabbitmq_routing_key=rk or "pickuptasks_queue",
+        auto_publish=bool(data.get("auto_publish", True)),
     )
 
 
@@ -75,6 +85,7 @@ def save_operator_profile(profile: OperatorProfile) -> None:
         "rabbitmq_username": profile.rabbitmq_username.strip(),
         "rabbitmq_password": profile.rabbitmq_password,
         "rabbitmq_routing_key": (profile.rabbitmq_routing_key.strip() or "pickuptasks_queue"),
+        "auto_publish": bool(profile.auto_publish),
     }
     _operator_profile_path().write_text(
         json.dumps(payload, ensure_ascii=False, indent=2),
@@ -86,6 +97,83 @@ def clear_operator_profile() -> None:
     p = _operator_profile_path()
     if p.exists():
         p.unlink()
+
+
+def load_recent_post_office_codes(operator_prefix: str) -> list[str]:
+    ensure_dirs()
+    p = _recent_post_office_path()
+    if not p.exists():
+        return []
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return []
+    by_operator = data.get("by_operator")
+    if not isinstance(by_operator, dict):
+        return []
+    codes = by_operator.get(operator_prefix)
+    if not isinstance(codes, list):
+        return []
+    normalized: list[str] = []
+    for code in codes:
+        c = str(code).strip()
+        if c and c not in normalized:
+            normalized.append(c)
+    return normalized
+
+
+def save_recent_post_office_codes(operator_prefix: str, codes: list[str]) -> None:
+    ensure_dirs()
+    p = _recent_post_office_path()
+    if p.exists():
+        try:
+            root = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            root = {"by_operator": {}}
+    else:
+        root = {"by_operator": {}}
+    by_operator = root.get("by_operator")
+    if not isinstance(by_operator, dict):
+        by_operator = {}
+        root["by_operator"] = by_operator
+    by_operator[operator_prefix] = [str(code).strip() for code in codes if str(code).strip()]
+    p.write_text(json.dumps(root, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def load_form_state(operator_prefix: str) -> dict[str, Any]:
+    ensure_dirs()
+    p = _form_state_path()
+    if not p.exists():
+        return {}
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    by_operator = data.get("by_operator")
+    if not isinstance(by_operator, dict):
+        return {}
+    state = by_operator.get(operator_prefix)
+    if not isinstance(state, dict):
+        return {}
+    return dict(state)
+
+
+def save_form_state(operator_prefix: str, form_state: dict[str, Any]) -> None:
+    ensure_dirs()
+    p = _form_state_path()
+    if p.exists():
+        try:
+            root = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            root = {"by_operator": {}}
+    else:
+        root = {"by_operator": {}}
+    by_operator = root.get("by_operator")
+    if not isinstance(by_operator, dict):
+        by_operator = {}
+        root["by_operator"] = by_operator
+    by_operator[operator_prefix] = dict(form_state)
+    p.write_text(json.dumps(root, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def _migrate_legacy_to_v2(data: dict[str, Any]) -> dict[str, Any]:

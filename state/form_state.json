@@ -1,0 +1,28 @@
+{
+  "by_operator": {
+    "DTQ": {
+      "gen_type": "BC",
+      "sender_id": "CUS-789",
+      "sender_name": "Nguyễn Văn A",
+      "sender_phone": "0909123456",
+      "sender_email": "nguyenvana@example.com",
+      "partner_id": "CUS01",
+      "partner_name": "Công ty TNHH TT",
+      "pickup_post_office_code_selected": "NLG",
+      "pickup_time_hms": "10:15:00",
+      "custom_location": false,
+      "pickup_longitude_input": 106.70782,
+      "pickup_latitude_input": 10.8111515,
+      "has_don": false,
+      "num_orders": null,
+      "has_kien": null,
+      "items_per_order": 2,
+      "order_length": null,
+      "order_width": null,
+      "order_height": null,
+      "item_length": 5.0,
+      "item_width": 2.0,
+      "item_height": 1.0
+    }
+  }
+}

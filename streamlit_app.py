@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import csv
 from dataclasses import dataclass
 from datetime import datetime
 import json
+from pathlib import Path
 import re
 from typing import Any
 
@@ -18,15 +20,45 @@ from gen_tool.storage import (
     OperatorProfile,
     clear_operator_profile,
     load_counters,
+    load_form_state,
     load_operator_profile,
+    load_recent_post_office_codes,
     save_counters,
+    save_form_state,
     save_generation,
     save_operator_profile,
+    save_recent_post_office_codes,
 )
 from gen_tool.user_prefix import operator_prefix_from_display_name
 
 DEFAULT_RABBITMQ_ROUTING_KEY = "pickuptasks_queue"
+MAX_RECENT_POST_OFFICES = 10
+POST_OFFICE_DATA_PATH = Path(__file__).resolve().parent.parent / "data-postoffice.csv"
 _GATE_KEYS = ("gate_display_name", "gate_rabbit_url", "gate_rabbit_user", "gate_rabbit_pass", "gate_rabbit_rk")
+_FORM_FIELDS = (
+    "gen_type",
+    "sender_id",
+    "sender_name",
+    "sender_phone",
+    "sender_email",
+    "partner_id",
+    "partner_name",
+    "pickup_post_office_code_selected",
+    "pickup_time_hms",
+    "custom_location",
+    "pickup_longitude_input",
+    "pickup_latitude_input",
+    "has_don",
+    "num_orders",
+    "has_kien",
+    "items_per_order",
+    "order_length",
+    "order_width",
+    "order_height",
+    "item_length",
+    "item_width",
+    "item_height",
+)
 
 
 def _rabbit_section_from_secrets() -> dict[str, Any]:
@@ -75,6 +107,20 @@ def _apply_operator_session(profile: OperatorProfile) -> None:
     st.session_state["rabbitmq_username"] = profile.rabbitmq_username
     st.session_state["rabbitmq_password"] = profile.rabbitmq_password
     st.session_state["rabbitmq_routing_key"] = profile.rabbitmq_routing_key
+    st.session_state["auto_publish"] = bool(profile.auto_publish)
+
+
+def _operator_profile_from_session() -> OperatorProfile:
+    return OperatorProfile(
+        display_name=str(st.session_state.get("operator_display_name", "")).strip(),
+        operator_prefix=str(st.session_state.get("operator_prefix", "")).strip(),
+        rabbitmq_base_url=str(st.session_state.get("rabbitmq_base_url", "")).strip().rstrip("/"),
+        rabbitmq_username=str(st.session_state.get("rabbitmq_username", "")).strip(),
+        rabbitmq_password=str(st.session_state.get("rabbitmq_password", "")),
+        rabbitmq_routing_key=str(st.session_state.get("rabbitmq_routing_key", DEFAULT_RABBITMQ_ROUTING_KEY)).strip()
+        or DEFAULT_RABBITMQ_ROUTING_KEY,
+        auto_publish=bool(st.session_state.get("auto_publish", True)),
+    )
 
 
 @dataclass(frozen=True)
@@ -87,6 +133,48 @@ class Defaults:
     partner_name: str = "Công ty TNHH TT"
 
 
+@dataclass(frozen=True)
+class PostOfficeOption:
+    code: str
+    name: str
+    latitude: float | None
+    longitude: float | None
+
+
+@st.cache_data(show_spinner=False)
+def _load_post_office_options(csv_path: str) -> list[PostOfficeOption]:
+    rows: list[PostOfficeOption] = []
+    p = Path(csv_path)
+    if not p.exists():
+        return rows
+
+    def _parse_float(value: str | None) -> float | None:
+        v = str(value or "").strip()
+        if not v or v.upper() == "NULL":
+            return None
+        try:
+            return float(v)
+        except ValueError:
+            return None
+
+    with p.open("r", encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            code = str(row.get("PostOfficeCode", "")).strip()
+            name = str(row.get("PostOfficeName", "")).strip()
+            if not code:
+                continue
+            rows.append(
+                PostOfficeOption(
+                    code=code,
+                    name=name,
+                    latitude=_parse_float(row.get("Latitude")),
+                    longitude=_parse_float(row.get("Longitude")),
+                )
+            )
+    return rows
+
+
 def _default_counters(operator_prefix: str) -> Counters:
     pickup_task_id_by_type: dict[str, str] = {}
     order_id_by_type: dict[str, str] = {}
@@ -94,6 +182,62 @@ def _default_counters(operator_prefix: str) -> Counters:
         pickup_task_id_by_type[t] = f"{operator_prefix}-{t}-0"
         order_id_by_type[t] = f"{operator_prefix}_{t}_0000"
     return Counters(pickup_task_id_by_type=pickup_task_id_by_type, order_id_by_type=order_id_by_type)
+
+
+def _parse_hms_or_default(hms: str | None, fallback: datetime) -> datetime:
+    value = str(hms or "").strip()
+    if not re.match(r"^\d{2}:\d{2}:\d{2}$", value):
+        return fallback
+    hh, mm, ss = [int(part) for part in value.split(":")]
+    return fallback.replace(hour=hh, minute=mm, second=ss, microsecond=0)
+
+
+def _today_with_same_time(dt: datetime) -> datetime:
+    now = datetime.now()
+    return now.replace(hour=dt.hour, minute=dt.minute, second=dt.second, microsecond=0)
+
+
+def _init_form_state(operator_prefix: str, defaults: Defaults) -> None:
+    if st.session_state.get("_form_state_inited") == operator_prefix:
+        return
+    saved = load_form_state(operator_prefix)
+    now = datetime.now().replace(microsecond=0)
+    form_defaults: dict[str, Any] = {
+        "gen_type": DIEUTIN_TYPES_ORDER[0] if DIEUTIN_TYPES_ORDER else "",
+        "sender_id": defaults.customer_id,
+        "sender_name": defaults.customer_name,
+        "sender_phone": defaults.phone,
+        "sender_email": defaults.email,
+        "partner_id": defaults.partner_id,
+        "partner_name": defaults.partner_name,
+        "pickup_time_hms": now.strftime("%H:%M:%S"),
+        "custom_location": False,
+        "pickup_longitude_input": float(BASE_PAYLOAD.get("pickupLongitude", 0.0)),
+        "pickup_latitude_input": float(BASE_PAYLOAD.get("pickupLatitude", 0.0)),
+        "has_don": True,
+        "num_orders": 1,
+        "has_kien": False,
+        "items_per_order": 2,
+        "order_length": float(BASE_PAYLOAD["orders"][0]["l"]),
+        "order_width": float(BASE_PAYLOAD["orders"][0]["w"]),
+        "order_height": float(BASE_PAYLOAD["orders"][0]["h"]),
+        "item_length": float(BASE_PAYLOAD["orders"][0]["items"][0]["l"]),
+        "item_width": float(BASE_PAYLOAD["orders"][0]["items"][0]["w"]),
+        "item_height": float(BASE_PAYLOAD["orders"][0]["items"][0]["h"]),
+    }
+    for field, default_value in form_defaults.items():
+        if field in st.session_state:
+            continue
+        saved_value = saved.get(field, default_value)
+        st.session_state[field] = saved_value
+    st.session_state["_form_state_inited"] = operator_prefix
+
+
+def _save_form_state(operator_prefix: str) -> None:
+    payload: dict[str, Any] = {}
+    for field in _FORM_FIELDS:
+        payload[field] = st.session_state.get(field)
+    save_form_state(operator_prefix, payload)
 
 
 def _restore_operator_from_disk() -> bool:
@@ -172,6 +316,7 @@ def _render_operator_gate() -> None:
             rabbitmq_username=user,
             rabbitmq_password=pw,
             rabbitmq_routing_key=rk,
+            auto_publish=True,
         )
         save_operator_profile(profile)
         _apply_operator_session(profile)
@@ -211,6 +356,7 @@ def main() -> None:
                 "rabbitmq_password",
                 "rabbitmq_routing_key",
                 "last_payload",
+                "_form_state_inited",
                 *_GATE_KEYS,
             ):
                 st.session_state.pop(k, None)
@@ -219,6 +365,7 @@ def main() -> None:
     st.title("Gen mã Điều tin / Điều nhận")
 
     defaults = Defaults()
+    _init_form_state(operator_prefix, defaults)
 
     st.subheader("Chọn loại cần gen")
     def _label_for_code(code: str) -> str:
@@ -238,67 +385,200 @@ def main() -> None:
         "Loại",
         options=DIEUTIN_TYPES_ORDER,
         format_func=_label_for_code,
+        key="gen_type",
     )
 
     col_a, col_b, col_c = st.columns([1, 1, 1])
     with col_a:
-        sender_id = st.text_input("Customer ID (auto-fill, sửa được)", value=defaults.customer_id)
-        sender_name = st.text_input("Tên khách hàng", value=defaults.customer_name)
-        sender_phone = st.text_input("SĐT", value=defaults.phone)
+        sender_id = st.text_input("Customer ID (auto-fill, sửa được)", key="sender_id")
+        sender_name = st.text_input("Tên khách hàng", key="sender_name")
+        sender_phone = st.text_input("SĐT", key="sender_phone")
     with col_b:
-        sender_email = st.text_input("Email", value=defaults.email)
-        partner_id = st.text_input("Partner ID", value=defaults.partner_id)
-        partner_name = st.text_input("Partner name", value=defaults.partner_name)
+        sender_email = st.text_input("Email", key="sender_email")
+        partner_id = st.text_input("Partner ID", key="partner_id")
+        partner_name = st.text_input("Partner name", key="partner_name")
 
         pickup_post_office_code_default = str(BASE_PAYLOAD.get("pickupPostOfficeCode", "")).strip()
         pickup_post_office_name_default = str(BASE_PAYLOAD.get("pickupPostOfficeName", "")).strip()
-        scheduled_pickup_date_default_str = str(BASE_PAYLOAD.get("scheduledPickupDate", "")).strip()
 
-        def _default_scheduled_pickup_datetime(s: str) -> datetime:
-            """
-            Mặc định là 'hôm nay'.
-            Nếu template có giờ/phút/giây hợp lệ (vd: 2026-03-31T 07:00:00+07)
-            thì giữ nguyên thời gian đó, chỉ thay ngày thành hôm nay.
-            """
-            now = datetime.now()
-            m = re.match(
-                r"^(?P<date>\d{4}-\d{2}-\d{2})T\s(?P<time>\d{2}:\d{2}:\d{2})(?P<offset>[+-]\d{2})$",
-                s,
-            )
-            if not m:
-                return now
-            time_s = m.group("time")
-            hh, mm, ss = [int(x) for x in time_s.split(":")]
-            return now.replace(hour=hh, minute=mm, second=ss)
-
-        pickup_post_office_code = st.text_input(
-            "Bưu cục (pickupPostOfficeCode)",
-            value=pickup_post_office_code_default,
+        post_office_options = _load_post_office_options(str(POST_OFFICE_DATA_PATH))
+        post_office_by_code = {o.code: o for o in post_office_options}
+        recent_codes = [
+            code for code in load_recent_post_office_codes(operator_prefix) if code in post_office_by_code
+        ]
+        ordered_codes = [*recent_codes, *[o.code for o in post_office_options if o.code not in recent_codes]]
+        default_code = (
+            pickup_post_office_code_default
+            if pickup_post_office_code_default in post_office_by_code
+            else (ordered_codes[0] if ordered_codes else "")
         )
-        pickup_post_office_name = st.text_input(
+        if (
+            "pickup_post_office_code_selected" not in st.session_state
+            or st.session_state["pickup_post_office_code_selected"] not in post_office_by_code
+        ):
+            st.session_state["pickup_post_office_code_selected"] = default_code
+        if ordered_codes:
+            selected_code = st.selectbox(
+                "Bưu cục",
+                options=ordered_codes,
+                key="pickup_post_office_code_selected",
+                format_func=lambda code: (
+                    f"{code} - {post_office_by_code[code].name}"
+                    if post_office_by_code.get(code) and post_office_by_code[code].name
+                    else code
+                ),
+            )
+        else:
+            selected_code = ""
+            st.warning(f"Không tìm thấy dữ liệu bưu cục tại {POST_OFFICE_DATA_PATH}.")
+        selected_post_office = post_office_by_code.get(selected_code)
+        if selected_code:
+            updated_recent_codes = [selected_code, *[code for code in recent_codes if code != selected_code]][
+                :MAX_RECENT_POST_OFFICES
+            ]
+            if updated_recent_codes != recent_codes:
+                save_recent_post_office_codes(operator_prefix, updated_recent_codes)
+
+        pickup_post_office_code = selected_post_office.code if selected_post_office else pickup_post_office_code_default
+        pickup_post_office_name = (
+            selected_post_office.name if selected_post_office and selected_post_office.name else pickup_post_office_name_default
+        )
+        st.text_input(
             "Tên bưu cục (pickupPostOfficeName)",
-            value=pickup_post_office_name_default,
+            value=pickup_post_office_name,
+            disabled=True,
         )
         pickup_post_office_id = pickup_post_office_code
 
+        if "scheduled_pickup_dt" not in st.session_state:
+            st.session_state["scheduled_pickup_dt"] = _parse_hms_or_default(
+                st.session_state.get("pickup_time_hms"),
+                datetime.now(),
+            )
+        else:
+            current_scheduled = st.session_state["scheduled_pickup_dt"]
+            if isinstance(current_scheduled, datetime):
+                st.session_state["scheduled_pickup_dt"] = _today_with_same_time(current_scheduled)
+            else:
+                st.session_state["scheduled_pickup_dt"] = _parse_hms_or_default(
+                    st.session_state.get("pickup_time_hms"),
+                    datetime.now(),
+                )
+        scheduled_seed = st.session_state["scheduled_pickup_dt"]
         scheduled_dt = st.datetime_input(
             "Ngày giờ pick-up (scheduledPickupDate)",
-            value=_default_scheduled_pickup_datetime(scheduled_pickup_date_default_str),
+            value=scheduled_seed,
+            key="scheduled_pickup_dt",
         )
+        st.session_state["pickup_time_hms"] = scheduled_dt.strftime("%H:%M:%S")
+        scheduled_dt = _parse_hms_or_default(st.session_state["pickup_time_hms"], datetime.now())
 
-        # Payload format currently uses a space after 'T': "YYYY-MM-DDT HH:MM:SS+07"
         scheduled_pickup_date = scheduled_dt.strftime("%Y-%m-%dT %H:%M:%S+07")
+        auto_longitude = (
+            selected_post_office.longitude
+            if selected_post_office and selected_post_office.longitude is not None
+            else float(BASE_PAYLOAD.get("pickupLongitude", 0.0))
+        )
+        auto_latitude = (
+            selected_post_office.latitude
+            if selected_post_office and selected_post_office.latitude is not None
+            else float(BASE_PAYLOAD.get("pickupLatitude", 0.0))
+        )
+        if st.session_state.get("pickup_longitude_input") != auto_longitude:
+            st.session_state["pickup_longitude_input"] = float(auto_longitude)
+        if st.session_state.get("pickup_latitude_input") != auto_latitude:
+            st.session_state["pickup_latitude_input"] = float(auto_latitude)
+
+        custom_location = st.toggle("Custom location", key="custom_location")
+        if custom_location:
+            input_longitude = st.number_input(
+                "Kinh độ lấy hàng (pickupLongitude)",
+                key="pickup_longitude_input",
+                format="%.6f",
+            )
+            input_latitude = st.number_input(
+                "Vĩ độ lấy hàng (pickupLatitude)",
+                key="pickup_latitude_input",
+                format="%.6f",
+            )
+            pickup_longitude = float(input_longitude)
+            pickup_latitude = float(input_latitude)
+        else:
+            pickup_longitude = 0.0
+            pickup_latitude = 0.0
     with col_c:
-        has_don = st.toggle("Có đơn", value=True)
+        has_don = st.toggle("Có đơn", key="has_don")
         num_orders = 0
         has_kien = False
         items_per_order = 1
 
         if has_don:
-            num_orders = st.number_input("Số đơn", min_value=0, max_value=500, value=1, step=1)
-            has_kien = st.toggle("Đơn kiện (có nhiều kiện/đơn)", value=False)
+            num_orders = st.number_input("Số đơn", min_value=0, max_value=500, step=1, key="num_orders")
+            has_kien = st.toggle("Đơn kiện (có nhiều kiện/đơn)", key="has_kien")
+            st.markdown("**Thông tin đơn**")
+            order_col_l, order_col_w, order_col_h = st.columns(3)
+            with order_col_l:
+                order_length = st.number_input(
+                    "Dài đơn (orders[].l)",
+                    min_value=0.0,
+                    step=1.0,
+                    format="%.2f",
+                    key="order_length",
+                )
+            with order_col_w:
+                order_width = st.number_input(
+                    "Rộng đơn (orders[].w)",
+                    min_value=0.0,
+                    step=1.0,
+                    format="%.2f",
+                    key="order_width",
+                )
+            with order_col_h:
+                order_height = st.number_input(
+                    "Cao đơn (orders[].h)",
+                    min_value=0.0,
+                    step=1.0,
+                    format="%.2f",
+                    key="order_height",
+                )
+            item_length = float(st.session_state.get("item_length", BASE_PAYLOAD["orders"][0]["items"][0]["l"]))
+            item_width = float(st.session_state.get("item_width", BASE_PAYLOAD["orders"][0]["items"][0]["w"]))
+            item_height = float(st.session_state.get("item_height", BASE_PAYLOAD["orders"][0]["items"][0]["h"]))
             if has_kien:
-                items_per_order = st.number_input("Số kiện / đơn", min_value=1, max_value=500, value=2, step=1)
+                items_per_order = st.number_input("Số kiện / đơn", min_value=1, max_value=500, step=1, key="items_per_order")
+                st.markdown("**Thông tin kiện**")
+                item_col_l, item_col_w, item_col_h = st.columns(3)
+                with item_col_l:
+                    item_length = st.number_input(
+                        "Dài kiện (orders[].items[].l)",
+                        min_value=0.0,
+                        step=1.0,
+                        format="%.2f",
+                        key="item_length",
+                    )
+                with item_col_w:
+                    item_width = st.number_input(
+                        "Rộng kiện (orders[].items[].w)",
+                        min_value=0.0,
+                        step=1.0,
+                        format="%.2f",
+                        key="item_width",
+                    )
+                with item_col_h:
+                    item_height = st.number_input(
+                        "Cao kiện (orders[].items[].h)",
+                        min_value=0.0,
+                        step=1.0,
+                        format="%.2f",
+                        key="item_height",
+                    )
+        else:
+            order_length = float(st.session_state.get("order_length", BASE_PAYLOAD["orders"][0]["l"]))
+            order_width = float(st.session_state.get("order_width", BASE_PAYLOAD["orders"][0]["w"]))
+            order_height = float(st.session_state.get("order_height", BASE_PAYLOAD["orders"][0]["h"]))
+            item_length = float(st.session_state.get("item_length", BASE_PAYLOAD["orders"][0]["items"][0]["l"]))
+            item_width = float(st.session_state.get("item_width", BASE_PAYLOAD["orders"][0]["items"][0]["w"]))
+            item_height = float(st.session_state.get("item_height", BASE_PAYLOAD["orders"][0]["items"][0]["h"]))
 
         st.caption("Tắt 'Có đơn': không tạo orders. Bật 'Đơn kiện': nhập số kiện/đơn.")
 
@@ -322,7 +602,16 @@ def main() -> None:
         pickup_post_office_id=pickup_post_office_id,
         pickup_post_office_name=pickup_post_office_name,
         scheduled_pickup_date=scheduled_pickup_date,
+        pickup_longitude=float(pickup_longitude),
+        pickup_latitude=float(pickup_latitude),
+        order_length=float(order_length),
+        order_width=float(order_width),
+        order_height=float(order_height),
+        item_length=float(item_length),
+        item_width=float(item_width),
+        item_height=float(item_height),
     )
+    _save_form_state(operator_prefix)
 
     counters = load_counters(_default_counters(operator_prefix), operator_prefix)
     prev_pickup_task_id = counters.pickup_task_id_by_type.get(gen_type, "")
@@ -346,6 +635,10 @@ def main() -> None:
             "RabbitMQ routing_key (copy & publish)",
             key="rabbitmq_routing_key",
         )
+        auto_publish = st.toggle("Auto publish sau khi Gen và lưu", key="auto_publish")
+        existing_profile = load_operator_profile()
+        if existing_profile is not None and existing_profile.auto_publish != auto_publish:
+            save_operator_profile(_operator_profile_from_session())
 
         gen_flash = st.session_state.pop("_gen_flash_success", None)
         if gen_flash:
@@ -355,11 +648,14 @@ def main() -> None:
         gen_clicked = False
         publish_clicked = False
         if has_last_payload:
-            c_gen, c_pub = st.columns(2, gap="small")
-            with c_gen:
+            if auto_publish:
                 gen_clicked = st.button("Gen và lưu", type="primary", use_container_width=True)
-            with c_pub:
-                publish_clicked = st.button("Publish lên RabbitMQ", use_container_width=True)
+            else:
+                c_gen, c_pub = st.columns(2, gap="small")
+                with c_gen:
+                    gen_clicked = st.button("Gen và lưu", type="primary", use_container_width=True)
+                with c_pub:
+                    publish_clicked = st.button("Publish lên RabbitMQ", use_container_width=True)
         else:
             gen_clicked = st.button("Gen và lưu", type="primary", use_container_width=True)
 
@@ -377,7 +673,23 @@ def main() -> None:
 
             out_path = save_generation(gen_type, result.pickup_task_id, result.payload)
             st.session_state["last_payload"] = result.payload
-            st.session_state["_gen_flash_success"] = f"Đã lưu: {out_path.as_posix()}"
+            flash_msg = f"Đã lưu: {out_path.as_posix()}"
+            if auto_publish:
+                rk = str(st.session_state.get("rabbitmq_routing_key", DEFAULT_RABBITMQ_ROUTING_KEY)).strip()
+                rk = rk or DEFAULT_RABBITMQ_ROUTING_KEY
+                ok, msg = publish_amq_default(
+                    str(st.session_state["rabbitmq_base_url"]),
+                    str(st.session_state["rabbitmq_username"]),
+                    str(st.session_state["rabbitmq_password"]),
+                    result.payload,
+                    rk,
+                    verify=_rabbit_verify_ssl_from_secrets(),
+                )
+                if ok:
+                    flash_msg = f"{flash_msg} | {msg}"
+                else:
+                    flash_msg = f"{flash_msg} | Auto publish lỗi: {msg}"
+            st.session_state["_gen_flash_success"] = flash_msg
             st.rerun()
 
         if publish_clicked:
