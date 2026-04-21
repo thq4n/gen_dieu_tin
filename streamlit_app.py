@@ -12,7 +12,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from streamlit.errors import StreamlitSecretNotFoundError
 
-from gen_tool.constants import DIEUTIN_TYPES_ORDER, DieuTinType
+from gen_tool.constants import DIEUTIN_TYPES_ORDER, DieuTinType, DISPATCH_METHODS_ORDER, DispatchMethod
 from gen_tool.generator import BASE_PAYLOAD, CustomerInput, GenInput, generate_payload
 from gen_tool.rabbitmq_publish import publish_amq_default, publish_body_json_for_clipboard
 from gen_tool.storage import (
@@ -37,6 +37,7 @@ POST_OFFICE_DATA_PATH = Path(__file__).resolve().parent / "data-postoffice.csv"
 _GATE_KEYS = ("gate_display_name", "gate_rabbit_url", "gate_rabbit_user", "gate_rabbit_pass", "gate_rabbit_rk")
 _FORM_FIELDS = (
     "gen_type",
+    "dispatch_method",
     "sender_id",
     "sender_name",
     "sender_phone",
@@ -211,6 +212,15 @@ def _to_int_or_default(value: Any, default: int) -> int:
         return default
 
 
+def _coerce_dispatch_method(value: Any) -> DispatchMethod:
+    if isinstance(value, DispatchMethod):
+        return value
+    try:
+        return DispatchMethod(int(value))
+    except (ValueError, TypeError):
+        return DispatchMethod.PICKUP
+
+
 def _init_form_state(operator_prefix: str, defaults: Defaults) -> None:
     if st.session_state.get("_form_state_inited") == operator_prefix:
         return
@@ -238,6 +248,7 @@ def _init_form_state(operator_prefix: str, defaults: Defaults) -> None:
         "item_length": float(BASE_PAYLOAD["orders"][0]["items"][0]["l"]),
         "item_width": float(BASE_PAYLOAD["orders"][0]["items"][0]["w"]),
         "item_height": float(BASE_PAYLOAD["orders"][0]["items"][0]["h"]),
+        "dispatch_method": DispatchMethod.PICKUP,
     }
     normalized: dict[str, Any] = {
         "gen_type": str(saved.get("gen_type", form_defaults["gen_type"])),
@@ -268,6 +279,7 @@ def _init_form_state(operator_prefix: str, defaults: Defaults) -> None:
         "item_length": _to_float_or_default(saved.get("item_length"), float(form_defaults["item_length"])),
         "item_width": _to_float_or_default(saved.get("item_width"), float(form_defaults["item_width"])),
         "item_height": _to_float_or_default(saved.get("item_height"), float(form_defaults["item_height"])),
+        "dispatch_method": _coerce_dispatch_method(saved.get("dispatch_method")),
     }
     for field, default_value in form_defaults.items():
         st.session_state[field] = normalized.get(field, default_value)
@@ -277,7 +289,10 @@ def _init_form_state(operator_prefix: str, defaults: Defaults) -> None:
 def _save_form_state(operator_prefix: str) -> None:
     payload: dict[str, Any] = {}
     for field in _FORM_FIELDS:
-        payload[field] = st.session_state.get(field)
+        v = st.session_state.get(field)
+        if field == "dispatch_method" and isinstance(v, DispatchMethod):
+            v = int(v.value)
+        payload[field] = v
     save_form_state(operator_prefix, payload)
 
 
@@ -442,6 +457,12 @@ def main() -> None:
         options=DIEUTIN_TYPES_ORDER,
         format_func=_label_for_code,
         key="gen_type",
+    )
+    dispatch_method = st.selectbox(
+        "Phương thức (dispatchMethod)",
+        options=DISPATCH_METHODS_ORDER,
+        format_func=lambda m: m.description,
+        key="dispatch_method",
     )
 
     col_a, col_b, col_c = st.columns([1, 1, 1])
@@ -666,6 +687,7 @@ def main() -> None:
 
     gen_input = GenInput(
         dieu_tin_type=gen_type,
+        dispatch_method=dispatch_method,
         operator_prefix=operator_prefix,
         num_orders=int(num_orders),
         has_kien=bool(has_kien),

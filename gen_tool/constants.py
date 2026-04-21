@@ -24,6 +24,27 @@ class DispatchType(int, Enum):
     WEB_API = 5
 
 
+class DispatchMethod(int, Enum):
+    PICKUP = 1
+    DELIVERY = 2
+
+    @property
+    def description(self) -> str:
+        match self:
+            case DispatchMethod.PICKUP:
+                return "Điều nhận"
+            case DispatchMethod.DELIVERY:
+                return "Điều chở"
+            case _:
+                return str(int(self))
+
+
+DISPATCH_METHODS_ORDER: tuple[DispatchMethod, ...] = (
+    DispatchMethod.PICKUP,
+    DispatchMethod.DELIVERY,
+)
+
+
 DISPATCH_TYPE_FALLBACK_BY_DIEUTIN: dict[DieuTinType, DispatchType] = {
     "BC": DispatchType.POST_OFFICE,
     "HT": DispatchType.SYSTEM,

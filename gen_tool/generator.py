@@ -6,7 +6,13 @@ import re
 from datetime import datetime, timezone
 from typing import Any
 
-from gen_tool.constants import DieuTinType, DISPATCH_TYPE_FALLBACK_BY_DIEUTIN, DispatchType, GoodsType
+from gen_tool.constants import (
+    DieuTinType,
+    DISPATCH_TYPE_FALLBACK_BY_DIEUTIN,
+    DispatchMethod,
+    DispatchType,
+    GoodsType,
+)
 from gen_tool.id_sequence import next_pickup_task_id
 
 
@@ -23,6 +29,7 @@ class CustomerInput:
 @dataclass(frozen=True)
 class GenInput:
     dieu_tin_type: DieuTinType
+    dispatch_method: DispatchMethod
     operator_prefix: str
     num_orders: int
     has_kien: bool
@@ -228,6 +235,7 @@ def generate_payload(
     if dispatch is None:
         dispatch = DispatchType.WEB_API if "WEB" in gen_input.dieu_tin_type.upper() else DispatchType.POST_OFFICE
     payload["dispatchType"] = int(dispatch.value)
+    payload["dispatchMethod"] = int(gen_input.dispatch_method.value)
 
     payload["pickupPostOfficeCode"] = gen_input.pickup_post_office_code.strip()
     # Theo yêu cầu: pickupPostOfficeId giống pickupPostOfficeCode.
